@@ -3,6 +3,7 @@
 tools=(
   "npm:npm install -g npm@latest"
   "composer:composer self-update"
+  "omz:omz update"
   # LLM CLI Agents
   "gemini:npm install -g @google/gemini-cli"
   "qwen:npm install -g @qwen-code/qwen-code@latest"
