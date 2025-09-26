@@ -16,14 +16,13 @@ tools=(
 
 for tool_info in "${tools[@]}"; do
   IFS=':' read -r exe_name update_cmd <<< "$tool_info"
-
   if command -v "$exe_name" &> /dev/null; then
-    echo -n "Found $exe_name. Attempting to update..."
+    echo -n "Update $exe_name..."
     $update_cmd &> /dev/null
     if [ $? -eq 0 ]; then
       echo "Successful (or not required)."
     else
-      echo "Error or update command not implemented."
+      echo "Error (or update command not implemented)."
     fi
   fi
 done
