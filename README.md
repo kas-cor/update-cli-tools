@@ -1,2 +1,5 @@
-# update-cli-tools
-Update CLI tools
+# Use
+
+```bash
+curl -fsSL  | bash
+```
