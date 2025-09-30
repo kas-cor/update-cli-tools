@@ -3,7 +3,7 @@
 tools=(
   # Package managers
   "npm:npm install -g npm@latest"
-  "bun:bun upgrade || {curl -fsSL https://bun.com/install | bash}"
+  "bun:bun upgrade || {bash -c 'curl -fsSL https://bun.com/install | bash'}"
   "composer:composer self-update"
   # LLM CLI Agents
   "gemini:npm install -g @google/gemini-cli@latest"
