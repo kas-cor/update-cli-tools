@@ -8,6 +8,7 @@ tools=(
   # LLM CLI Agents
   "gemini:npm install -g @google/gemini-cli@latest"
   "qwen:npm install -g @qwen-code/qwen-code@latest"
+  "copilot:npm install -g @github/copilot@latest"
   "cursor-agent:cursor-agent update"
   "goose:goose update"
   # Other tools
