@@ -9,6 +9,8 @@ tools=(
   "gemini:npm install -g @google/gemini-cli@latest"
   "qwen:npm install -g @qwen-code/qwen-code@latest"
   "copilot:npm install -g @github/copilot@latest"
+  "codex:npm install -g @openai/codex@latest"
+  "claude:npm install -g @anthropic-ai/claude-code@latest"
   "cursor-agent:cursor-agent update"
   "goose:goose update"
   # Other tools
