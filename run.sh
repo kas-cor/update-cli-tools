@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ ! -d ~/.update-cli ] && mkdir -p ~/.update-cli
+
 tools=(
   # Package managers
   "npm:npm install -g npm@latest"
@@ -17,9 +19,9 @@ tools=(
 
 for tool_info in "${tools[@]}"; do
   IFS=':' read -r exe_name update_cmd <<< "$tool_info"
-  if command -v "$exe_name" &> /dev/null; then
+  if command -v "$exe_name" &>> ~/.update-cli/update-cli.log; then
     echo -n "Update $exe_name..."
-    $update_cmd &> /dev/null
+    $update_cmd &>> ~/.update-cli/update-cli.log
     if [ $? -eq 0 ]; then
       echo "Successful (or not required)."
     else
@@ -27,3 +29,19 @@ for tool_info in "${tools[@]}"; do
     fi
   fi
 done
+
+if command -v "logrotate" >> ~/.update-cli/update-cli.log; then
+logrotate -f -s ~/.update-cli/logrotate.status <(cat <<'EOF'
+~/.update-cli/*.log {
+  rotate 7
+  daily
+  compress
+  missingok
+  notifempty
+  copytruncate
+}
+EOF
+)
+fi
+
+echo "Logs are stored in the ~/.update-cli directory."
