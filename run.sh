@@ -13,8 +13,6 @@ tools=(
   "claude:npm install -g @anthropic-ai/claude-code@latest"
   "cursor-agent:cursor-agent update"
   "goose:goose update"
-  # Other tools
-  "omz:omz update"
 )
 
 for tool_info in "${tools[@]}"; do
