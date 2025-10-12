@@ -21,7 +21,7 @@ for tool_info in "${tools[@]}"; do
   IFS=':' read -r exe_name update_cmd <<< "$tool_info"
   if command -v "$exe_name" &>> ~/.update-cli/update-cli.log; then
     echo -n "Update $exe_name..."
-    $update_cmd &>> ~/.update-cli/update-cli.log
+    bash -c "$update_cmd" &>> ~/.update-cli/update-cli.log
     if [ $? -eq 0 ]; then
       echo "Successful (or not required)."
     else
