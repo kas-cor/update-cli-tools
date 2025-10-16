@@ -24,13 +24,19 @@ for tool_info in "${tools[@]}"; do
   current_tool=$((current_tool + 1))
   IFS=':' read -r exe_name update_cmd <<< "$tool_info"
   if command -v "$exe_name" &>> ~/.update-cli/update-cli.log; then
-    echo -n "($current_tool/$total_tools) Update $exe_name..."
-    bash -c "$update_cmd" &>> ~/.update-cli/update-cli.log
-    if [ $? -eq 0 ]; then
-      echo "Successful (or not required)."
+    echo -n "($current_tool/$total_tools) Updating $exe_name..."
+    
+    temp_log=$(mktemp)
+    
+    if bash -c "$update_cmd" &> "$temp_log"; then
+      echo " Successful."
     else
-      echo "Error (or update command not implemented)."
+      echo " Failed."
+      cat "$temp_log"
     fi
+    
+    cat "$temp_log" >> ~/.update-cli/update-cli.log
+    rm "$temp_log"
   fi
 done
 
