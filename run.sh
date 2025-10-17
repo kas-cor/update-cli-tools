@@ -2,6 +2,10 @@
 
 [ ! -d ~/.update-cli ] && mkdir -p ~/.update-cli
 
+echo "==============================================" >> ~/.update-cli/update-cli.log
+echo "      Update started at $(date)" >> ~/.update-cli/update-cli.log
+echo "==============================================" >> ~/.update-cli/update-cli.log
+
 tools=(
   # Package managers
   "npm:npm install -g npm@latest"
@@ -25,6 +29,10 @@ for tool_info in "${tools[@]}"; do
   IFS=':' read -r exe_name update_cmd <<< "$tool_info"
   if command -v "$exe_name" &>> ~/.update-cli/update-cli.log; then
     echo -n "($current_tool/$total_tools) Updating $exe_name..."
+    
+    echo "----------------------------------------------" >> ~/.update-cli/update-cli.log
+    echo "Updating $exe_name..." >> ~/.update-cli/update-cli.log
+    echo "----------------------------------------------" >> ~/.update-cli/update-cli.log
     
     temp_log=$(mktemp)
     
