@@ -52,7 +52,7 @@ for tool_info in "${tools[@]}"; do
   fi
 done
 
-if command -v "logrotate" >> ~/.update-cli/update-cli.log; then
+if command -v "logrotate" >/dev/null 2>&1; then
 logrotate -f -s ~/.update-cli/logrotate.status <(cat <<'EOF'
 ~/.update-cli/*.log {
   rotate 7

@@ -22,6 +22,7 @@ The script currently supports updating the following tools:
     *   `claude`
     *   `cursor-agent`
     *   `goose`
+    *   `vibe`
 
 ## Usage
 
