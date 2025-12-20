@@ -10,16 +10,16 @@ tools=(
   # Package managers
   "npm:npm install -g npm@latest"
   "bun:bun upgrade || bash -c 'curl -fsSL https://bun.com/install | bash'"
-  "composer:composer self-update"
+  "composer:composer self-update || bash -c 'curl -fsSL https://getcomposer.org/installer | php && sudo mv composer.phar /usr/local/bin/composer'"
   # LLM CLI Agents
   "gemini:npm install -g @google/gemini-cli@latest"
   "qwen:npm install -g @qwen-code/qwen-code@latest"
   "copilot:npm install -g @github/copilot@latest"
   "codex:npm install -g @openai/codex@latest"
   "claude:npm install -g @anthropic-ai/claude-code@latest"
-  "cursor-agent:cursor-agent update"
-  "goose:goose update"
-  "vibe:bash -c 'curl -LsSf https://mistral.ai/vibe/install.sh | bash'"
+  "cursor-agent:cursor-agent update || bash -c 'curl -fsSL https://cursor.com/install | bash'"
+  "goose:goose update || bash -c 'curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash'"
+  "vibe:bash -c 'curl -fsSL https://mistral.ai/vibe/install.sh | bash'"
 )
 
 total_tools=${#tools[@]}
@@ -30,7 +30,6 @@ for tool_info in "${tools[@]}"; do
   IFS=':' read -r exe_name update_cmd <<< "$tool_info"
   if command -v "$exe_name" &>> ~/.update-cli/update-cli.log; then
     echo -n "($current_tool/$total_tools) Updating $exe_name..."
-
     echo "----------------------------------------------" >> ~/.update-cli/update-cli.log
     echo "Updating $exe_name..." >> ~/.update-cli/update-cli.log
     echo "----------------------------------------------" >> ~/.update-cli/update-cli.log
