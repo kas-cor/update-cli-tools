@@ -21,6 +21,7 @@ The script iterates through a predefined list of tools. For each tool, it checks
 - `composer` - PHP dependency manager
 
 ### LLM CLI Agents
+- `koda` - Koda CLI agent
 - `gemini` - Google's Gemini CLI
 - `qwen` - Alibaba Cloud's Qwen Code CLI
 - `copilot` - GitHub Copilot CLI

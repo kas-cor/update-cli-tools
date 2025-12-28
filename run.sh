@@ -12,6 +12,7 @@ tools=(
   "bun:bun upgrade || bash -c 'curl -fsSL https://bun.com/install | bash'"
   "composer:composer self-update || bash -c 'curl -fsSL https://getcomposer.org/installer | php && sudo mv composer.phar /usr/local/bin/composer'"
   # LLM CLI Agents
+  "koda:npm i -g @kodadev/koda-cli@latest"
   "gemini:npm install -g @google/gemini-cli@latest"
   "qwen:npm install -g @qwen-code/qwen-code@latest"
   "copilot:npm install -g @github/copilot@latest"

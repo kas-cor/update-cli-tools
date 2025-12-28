@@ -21,6 +21,7 @@
 - `composer` - менеджер зависимостей PHP
 
 ### Агенты LLM CLI
+- `koda` - агент Koda CLI
 - `gemini` - CLI для Google Gemini
 - `qwen` - CLI для Qwen Code от Alibaba Cloud
 - `copilot` - CLI для GitHub Copilot
