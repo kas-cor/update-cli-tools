@@ -10,7 +10,7 @@ tools=(
   # Package managers
   "npm:npm install -g npm@latest"
   "bun:bun upgrade || bash -c 'curl -fsSL https://bun.com/install | bash'"
-  "composer:composer self-update || bash -c 'curl -fsSL https://getcomposer.org/installer | php && sudo mv composer.phar /usr/local/bin/composer'"
+  "composer:composer self-update || bash -c 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'"
   # LLM CLI Agents
   "koda:npm i -g @kodadev/koda-cli@latest"
   "gemini:npm install -g @google/gemini-cli@latest"
@@ -21,6 +21,7 @@ tools=(
   "cursor-agent:cursor-agent update || bash -c 'curl -fsSL https://cursor.com/install | bash'"
   "goose:goose update || bash -c 'curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash'"
   "vibe:bash -c 'curl -fsSL https://mistral.ai/vibe/install.sh | bash'"
+  "opencode:opencode upgrade || bash -c 'curl -fsSL https://opencode.ai/install | bash'"
 )
 
 total_tools=${#tools[@]}
