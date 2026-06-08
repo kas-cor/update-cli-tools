@@ -1,17 +1,20 @@
 #!/bin/bash
 
-[ ! -d ~/.update-cli ] && mkdir -p ~/.update-cli
+LOG_DIR="$HOME/.update-cli"
+LOG_FILE="$LOG_DIR/update-cli.log"
 
-echo "==============================================" >> ~/.update-cli/update-cli.log
-echo "      Update started at $(date)" >> ~/.update-cli/update-cli.log
-echo "==============================================" >> ~/.update-cli/update-cli.log
+mkdir -p "$LOG_DIR"
+
+{
+  echo "=============================================="
+  echo "      Update started at $(date)"
+  echo "=============================================="
+} >> "$LOG_FILE"
 
 tools=(
-  # Package managers
   "npm:npm install -g npm@latest"
   "bun:bun upgrade || bash -c 'curl -fsSL https://bun.com/install | bash'"
   "composer:composer self-update || bash -c 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'"
-  # LLM CLI Agents
   "koda:npm i -g @kodadev/koda-cli@latest"
   "gemini:npm install -g @google/gemini-cli@latest"
   "qwen:npm install -g @qwen-code/qwen-code@latest"
@@ -24,37 +27,46 @@ tools=(
   "opencode:opencode upgrade || bash -c 'curl -fsSL https://opencode.ai/install | bash'"
 )
 
-total_tools=${#tools[@]}
-current_tool=0
+update_tool() {
+  local exe_name="$1" update_cmd="$2" index="$3" total="$4"
 
-for tool_info in "${tools[@]}"; do
-  current_tool=$((current_tool + 1))
-  IFS=':' read -r exe_name update_cmd <<< "$tool_info"
-  if command -v "$exe_name" &>> ~/.update-cli/update-cli.log; then
-    echo -n "($current_tool/$total_tools) Updating $exe_name..."
-    echo "----------------------------------------------" >> ~/.update-cli/update-cli.log
-    echo "Updating $exe_name..." >> ~/.update-cli/update-cli.log
-    echo "----------------------------------------------" >> ~/.update-cli/update-cli.log
-
-    temp_log=$(mktemp)
-
-    if bash -c "$update_cmd" &> "$temp_log"; then
-      echo " Successful."
-    else
-      echo " Failed."
-      cat "$temp_log"
-    fi
-
-    cat "$temp_log" >> ~/.update-cli/update-cli.log
-    rm "$temp_log"
-  else
-    echo "($current_tool/$total_tools) $exe_name: Pass"
+  if ! command -v "$exe_name" &>> "$LOG_FILE"; then
+    echo "($index/$total) $exe_name: Pass"
     echo "  Install: $update_cmd"
+    return
   fi
+
+  echo -n "($index/$total) Updating $exe_name..."
+
+  {
+    echo "----------------------------------------------"
+    echo "Updating $exe_name..."
+    echo "----------------------------------------------"
+  } >> "$LOG_FILE"
+
+  local temp_log
+  temp_log=$(mktemp)
+
+  if bash -c "$update_cmd" &> "$temp_log"; then
+    echo " Successful."
+  else
+    echo " Failed."
+    cat "$temp_log"
+  fi
+
+  cat "$temp_log" >> "$LOG_FILE"
+  rm "$temp_log"
+}
+
+total_tools=${#tools[@]}
+
+for i in "${!tools[@]}"; do
+  IFS=':' read -r exe_name update_cmd <<< "${tools[$i]}"
+  update_tool "$exe_name" "$update_cmd" $((i + 1)) "$total_tools"
 done
 
-if command -v "logrotate" >/dev/null 2>&1; then
-logrotate -f -s ~/.update-cli/logrotate.status <(cat <<'EOF'
+if command -v logrotate &>/dev/null; then
+  logrotate -f -s "$LOG_DIR/logrotate.status" <(cat <<'EOF'
 ~/.update-cli/*.log {
   rotate 7
   daily
@@ -67,4 +79,4 @@ EOF
 )
 fi
 
-echo "Logs are stored in the ~/.update-cli directory."
+echo "Logs are stored in the $LOG_DIR directory."
