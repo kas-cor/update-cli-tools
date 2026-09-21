@@ -30,7 +30,7 @@
 - `cursor-agent` - агент для IDE Cursor
 - `goose` - помощник разработчика Goose
 - `vibe` - CLI для Mistral AI Vibe
-- `opencode` - агент OpenCode CLI
+- `opencode` - агент OpenCode CLI (резервный установщик ставит v2)
 
 ## Предварительные требования
 

@@ -12,7 +12,8 @@ mkdir -p "$LOG_DIR"
 } >> "$LOG_FILE"
 
 tools=(
-  "npm:npm install -g npm@latest"
+  # --force: plain self-update fails with EEXIST/ideal-tree conflicts; force overwrite instead.
+  "npm:npm install -g --force npm@latest"
   "bun:bun upgrade || bash -c 'curl -fsSL https://bun.com/install | bash'"
   "composer:composer self-update || bash -c 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'"
   "koda:npm i -g @kodadev/koda-cli@latest"
@@ -24,7 +25,10 @@ tools=(
   "cursor-agent:cursor-agent update || bash -c 'curl -fsSL https://cursor.com/install | bash'"
   "goose:goose update || bash -c 'curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash'"
   "vibe:bash -c 'curl -fsSL https://mistral.ai/vibe/install.sh | bash'"
-  "opencode:opencode upgrade || bash -c 'curl -fsSL https://opencode.ai/install | bash'"
+  # Fallback intentionally targets the v2 installer (v1→v2 migration).
+  # Note: on npm-managed installs `opencode upgrade` prompts and exits non-zero with stdin
+  # closed, so it lands here and installs v2 alongside/shadowing the npm copy.
+  "opencode:opencode upgrade || bash -c 'curl -fsSL https://opencode.ai/v2/install | bash'"
 )
 
 update_tool() {
@@ -47,7 +51,9 @@ update_tool() {
   local temp_log
   temp_log=$(mktemp)
 
-  if bash -c "$update_cmd" &> "$temp_log"; then
+  # stdin is closed: update commands must never prompt; a prompt attempt fails fast
+  # (non-zero exit) instead of hanging, falling into the "Failed." branch / `||` fallback.
+  if bash -c "$update_cmd" </dev/null &> "$temp_log"; then
     echo " Successful."
   else
     echo " Failed."

@@ -30,7 +30,7 @@ The script iterates through a predefined list of tools. For each tool, it checks
 - `cursor-agent` - Cursor IDE agent
 - `goose` - Goose development assistant
 - `vibe` - Mistral AI Vibe CLI
-- `opencode` - OpenCode CLI agent
+- `opencode` - OpenCode CLI agent (fallback installer targets v2)
 
 ## Prerequisites
 

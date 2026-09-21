@@ -4,14 +4,13 @@ Single bash script (`run.sh`) that updates CLI tools (package managers + AI agen
 
 ## Tools format
 
-Entries in the `tools` array in `run.sh` follow:
+Entries in the `tools` array in `run.sh` follow `"executable_name:update_command"`, split on the **first** colon only
+(`IFS=':' read`, remainder stays in the command) — `https://` URLs inside commands are safe, don't "fix" them.
 
-```
-"executable_name:update_command"
-```
-
-When adding a tool: test that `command -v executable_name` works and that `update_command` is reliable (idempotent,
-non-interactive).
+When adding a tool: verify `command -v executable_name` matches the binary name and that `update_command` is
+idempotent and never prompts. Known trap: `opencode upgrade` asks "Install anyways?" on npm-managed installs and
+would hang without a TTY — `update_tool` closes stdin (`</dev/null`) so prompts fail fast
+into the fallback instead of hanging. Every command must still be safe with stdin closed.
 
 ## Structure
 
@@ -37,8 +36,8 @@ non-interactive).
 - **Non-PATH installs**: some fallback install commands (bun, composer, cursor-agent, goose, vibe, opencode) pipe
   `curl ... | bash` inside the update command — intentional, not a bug
 
-## Adding a tool
+## Verification & docs
 
-1. Add entry to `tools` array: `"name:command"`
-2. Verify `command -v name` matches the installed binary name
-3. Ensure the command works non-interactively and won't prompt for confirmation
+- Verify with `bash -n run.sh` only — never execute `run.sh` to "test", it upgrades real tools on the machine.
+- No build, test, lint, or CI exists; syntax check is the full verification.
+- Adding/removing a tool also requires updating the Supported Tools list in **both** `README.md` and `README_RU.md`.
