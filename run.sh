@@ -25,9 +25,6 @@ tools=(
   "cursor-agent:cursor-agent update || bash -c 'curl -fsSL https://cursor.com/install | bash'"
   "goose:goose update || bash -c 'curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash'"
   "vibe:bash -c 'curl -fsSL https://mistral.ai/vibe/install.sh | bash'"
-  # Fallback intentionally targets the v2 installer (v1→v2 migration).
-  # Note: on npm-managed installs `opencode upgrade` prompts and exits non-zero with stdin
-  # closed, so it lands here and installs v2 alongside/shadowing the npm copy.
   "opencode:opencode upgrade || bash -c 'curl -fsSL https://opencode.ai/v2/install | bash'"
 )
 
